@@ -1,0 +1,5 @@
+/node_modules
+/res
+/src
+/ts/module/activity/layout
+package-lock.json
