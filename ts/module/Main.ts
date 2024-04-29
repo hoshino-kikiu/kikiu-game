@@ -2,8 +2,8 @@ import ActivityManeger from "./activity/ActivityManager";
 import MainActivity from "./activity/layout/MainActivity";
 import StoryActivity from "./activity/layout/StoryActivity";
 import TitleActivity from "./activity/layout/TitleActivity";
-import Config from "./util/Config";
 import StorySelectActivity from "./activity/layout/StorySelectActivity";
+import KeyControl from "./util/KeyControl";
 
 
 /**
@@ -18,13 +18,13 @@ module.exports = class Main {
         this.activityManeger =
             new ActivityManeger(new MainActivity(document, appContainerQuery))
         this.includeActivity(document, appContainerQuery);
-        Config.keyInputEvent(document)
+        KeyControl.keyInputEvent(document)
     }
 
     private includeActivity(document: Document, appContainerQuery: string): void{
         this.activityManeger.addActivityList(new TitleActivity(document, appContainerQuery))
         this.activityManeger.addActivityList(new StoryActivity(document, appContainerQuery))
-        this.activityManeger.addActivityList(new StorySelectActivity(document, appContainerQuery))
+        //this.activityManeger.addActivityList(new StorySelectActivity(document, appContainerQuery))
     }
     
 }
