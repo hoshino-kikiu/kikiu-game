@@ -6,6 +6,7 @@ import XmlPaser from "../util/XmlParser";
 import LayoutRender from "../layout/LayoutRender";
 import Layout from "../layout/Layout";
 import KeyControl from "../util/KeyControl";
+import KeyMaps from "../util/interface/KeyMaps";
 
 interface EventListener { 
     event: string
@@ -28,13 +29,18 @@ export default abstract class AbstractActivity {
 
     private executeActions: any = {};
 
+    private keyMaps: KeyMaps
+    private selectKey: Array<number> = []
+
     constructor(document: Document, appContainerQuery: string) {
         let activityName = this.constructor.name.replace('Activity', '')
         console.log('set:' + activityName)
         this.document = document
         this.activityName = activityName
-         this.appContainer = document.querySelector(appContainerQuery)
+        this.appContainer = document.querySelector(appContainerQuery)
         this.layout = new LayoutRender(activityName).render()
+        this.keyMaps = KeyControl.KeyMap.creatKeyMap(this.document)
+        this.selectKey = [0,0]
 
         try {
             const strings = fs.readFileSync(this.defaultFilePath + activityName + "/string_" + Config.LANG + ".xml", "utf-8")
@@ -192,6 +198,7 @@ export default abstract class AbstractActivity {
         this.insertStringList()
         this.executeActionInit()
         KeyControl.initializeKeyEvent()
+        this.keyMaps = KeyControl.KeyMap.creatKeyMap(this.document)
     }
 
     /**
@@ -284,5 +291,35 @@ export default abstract class AbstractActivity {
      */
     public getActivityName(): string{
         return this.activityName
+    }
+
+    /**
+     * KeyMapsのゲッター
+     * @returns 
+     */
+        public getKeyMaps(): KeyMaps {
+            return this.keyMaps
+        }
+    
+    /**
+     * KeyMapsのセッター
+     */
+    public setKeyMaps(keyMaps: KeyMaps): void {
+        this.keyMaps = keyMaps
+    }
+
+    /**
+     * selectKeyのゲッター
+     * @returns 
+     */
+    public getSelectKey(): Array<number> {
+        return this.selectKey
+    }
+
+    /**
+     * selectKeyのセッター
+     */
+    public setSelectKey(selectKey: Array<number>): void {
+        this.selectKey = selectKey
     }
 }
